@@ -479,6 +479,10 @@ DELETE FROM ...
 | Services       | `sudo systemctl is-active nginx mysql`       |
 | CRM health     | `curl -I https://crm-aws.tuktuk.live`        |
 
+koi bhi chij agar server pe bheja hai to powershell mai download mai ja kar ye run karna 
+
+scp -i "C:\Users\jaswa\Downloads\crm-server-key.pem" .\yyjcpl_uploads.zip ubuntu@3.109.90.44:/home/ubuntu/
+
 ### 🔴 Sabse important
 
 Developer ko **DB password, `.env`, AWS credentials, KMS keys, SSL private key, Firebase/service-account files** casually share nahi karne hain.
