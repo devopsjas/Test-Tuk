@@ -192,7 +192,7 @@ aws s3 cp s3://crm-tuktuk-backups-352306493926/mysql/yyjcpl_crm/2026-09-23/yyjcp
 
 Aur **raw `INSERT INTO` command ka output chat mein paste mat karna**, kyunki usme CRM users/data/password hashes aa sakte hain.
 
--------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
 Haan bhai 👍 main tumhe **complete verification commands** ek jagah de deta hoon, taaki future mein scheduled backup check karte time easily use kar sako.
@@ -342,3 +342,136 @@ S3 → uploads/
        ↓
        Actual PDF / images / files
 ```
+---------------------------------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+## 😄🔹 MySQL / SQL commands
+
+Pehle login:
+
+```bash
+mysql -h 127.0.0.1 -P 3306 -u yyjcpl_admin -p
+```
+
+Password enter karo. Phir:
+
+### 1. Database select
+
+```sql
+USE yyjcpl_crm;
+```
+
+### 2. Documents — total records
+
+```sql
+SELECT COUNT(*) AS total_documents FROM documents;
+```
+
+### 3. Documents — records dekhna
+
+```sql
+SELECT * FROM documents;
+```
+
+### 4. Attendance — 25 Sep 2026 ke Present records
+
+```sql
+SELECT *
+FROM employee_attendance
+WHERE attendance_date = '2026-09-25'
+AND status = 'present';
+```
+
+### 5. Attendance — names ke saath
+
+```sql
+SELECT
+    e.full_name,
+    e.department,
+    e.designation,
+    ea.status,
+    ea.check_in,
+    ea.check_out,
+    ea.remark
+FROM employee_attendance ea
+JOIN employees e ON e.id = ea.employee_id
+WHERE ea.attendance_date = '2026-09-25'
+AND ea.status = 'present'
+ORDER BY e.full_name;
+```
+
+### 6. Candidates — 25 Sep ko added
+
+```sql
+SELECT
+    full_name,
+    email,
+    phone,
+    current_location,
+    preferred_location,
+    experience_years,
+    status,
+    source,
+    created_at
+FROM candidates
+WHERE created_at >= '2026-09-25 00:00:00'
+AND created_at < '2026-09-26 00:00:00'
+ORDER BY created_at;
+```
+
+### 7. Candidates — total count
+
+```sql
+SELECT COUNT(*) AS total_candidates FROM candidates;
+```
+
+### 8. Candidate ka uploaded resume/path dekhna
+
+```sql
+SELECT full_name, resume_url, created_at
+FROM candidates
+WHERE created_at >= '2026-09-25 00:00:00'
+AND created_at < '2026-09-26 00:00:00';
+```
+
+---
+
+### 🔹 Backup verification ka simple flow
+
+**Live Database:**
+
+```text
+MySQL
+ ↓
+Documents
+Attendance
+Candidates
+ ↓
+Records verify
+```
+
+**Backup:**
+
+```text
+S3
+ ↓
+.sql.gz
+ ↓
+Extract
+ ↓
+SQL file
+ ↓
+Same records search
+```
+
+**Actual PDFs/files:**
+
+```text
+S3
+ ↓
+uploads/
+ ↓
+Actual PDF/image/file
+```
+
+Bas bhai, **SQL database ke records ke liye hai; S3 `uploads/` actual files ke liye hai.**
+
