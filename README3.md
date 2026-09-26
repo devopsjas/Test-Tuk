@@ -192,4 +192,153 @@ aws s3 cp s3://crm-tuktuk-backups-352306493926/mysql/yyjcpl_crm/2026-09-23/yyjcp
 
 Aur **raw `INSERT INTO` command ka output chat mein paste mat karna**, kyunki usme CRM users/data/password hashes aa sakte hain.
 
+-------------------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+
+Haan bhai 👍 main tumhe **complete verification commands** ek jagah de deta hoon, taaki future mein scheduled backup check karte time easily use kar sako.
+
+## 1. Database backup — S3 mein latest backup check
+
+```bash
+aws s3 ls s3://crm-tuktuk-backups-352306493926/mysql/yyjcpl_crm/ --recursive
+```
+
+Latest backup identify karne ke liye:
+
+```bash
+aws s3 ls s3://crm-tuktuk-backups-352306493926/mysql/yyjcpl_crm/ --recursive | tail -5
+```
+
+---
+
+## 2. DB backup download
+
+Example 26 Sep backup:
+
+```bash
+aws s3 cp s3://crm-tuktuk-backups-352306493926/mysql/yyjcpl_crm/2026-09-26/yyjcpl_crm_2026-09-26_02-00-01.sql.gz /tmp/crm-backup.sql.gz
+```
+
+Extract:
+
+```bash
+gunzip -c /tmp/crm-backup.sql.gz > /tmp/crm-backup.sql
+```
+
+---
+
+# 3. Documents backup check
+
+Backup SQL file mein:
+
+```bash
+grep -in "Dumping data for table \`documents\`" /tmp/crm-backup.sql
+```
+
+Documents ke INSERT records:
+
+```bash
+grep -in "INSERT INTO \`documents\`" /tmp/crm-backup.sql
+```
+
+---
+
+# 4. Attendance backup check
+
+```bash
+grep -in "Dumping data for table \`employee_attendance\`" /tmp/crm-backup.sql
+```
+
+Attendance INSERT:
+
+```bash
+grep -in "INSERT INTO \`employee_attendance\`" /tmp/crm-backup.sql
+```
+
+25 Sep ke records specifically search karne ke liye:
+
+```bash
+grep -n "2026-09-25" /tmp/crm-backup.sql
+```
+
+---
+
+# 5. Candidates backup check
+
+Table section:
+
+```bash
+grep -in "Dumping data for table \`candidates\`" /tmp/crm-backup.sql
+```
+
+Candidate INSERT:
+
+```bash
+grep -in "INSERT INTO \`candidates\`" /tmp/crm-backup.sql
+```
+
+Specific candidate:
+
+```bash
+grep -in "aniket Jadhav" /tmp/crm-backup.sql
+```
+
+---
+
+# 6. Uploads backup — S3
+
+Ye **database se separate** hai.
+
+Saari uploaded backup files:
+
+```bash
+aws s3 ls s3://crm-tuktuk-backups-352306493926/uploads/ --recursive
+```
+
+Latest 20 files:
+
+```bash
+aws s3 ls s3://crm-tuktuk-backups-352306493926/uploads/ --recursive | tail -20
+```
+
+Specific test PDF:
+
+```bash
+aws s3 ls s3://crm-tuktuk-backups-352306493926/uploads/ --recursive | grep "cacbf846"
+```
+
+Agar output aa gaya, to **Testing for backup wali PDF S3 uploads backup mein present hai**.
+
+---
+
+## 7. Uploads backup ka total count
+
+```bash
+aws s3 ls s3://crm-tuktuk-backups-352306493926/uploads/ --recursive | wc -l
+```
+
+---
+
+### Simple yaad rakhne wali cheez
+
+**Database backup:**
+
+```text
+S3 → mysql/yyjcpl_crm/
+       ↓
+       .sql.gz
+       ↓
+       Documents
+       Attendance
+       Candidates
+       Employees
+       etc.
+```
+
+**Uploads backup:**
+
+```text
+S3 → uploads/
+       ↓
+       Actual PDF / images / files
+```
