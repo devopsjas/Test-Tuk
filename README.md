@@ -478,6 +478,7 @@ DELETE FROM ...
 | Disk           | `df -h` / `lsblk`                            |
 | Services       | `sudo systemctl is-active nginx mysql`       |
 | CRM health     | `curl -I https://crm-aws.tuktuk.live`        |
+| Server/Domain name details  | `sudo grep -R "server_name" /etc/nginx/sites-enabled/ /etc/nginx/sites-available/` |
 
 koi bhi chij agar server pe bheja hai to powershell mai download mai ja kar ye run karna 
 
