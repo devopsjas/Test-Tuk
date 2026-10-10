@@ -1,4 +1,4 @@
-Haan bhai. Developer ko CRM AWS EC2 par kaam karne ke liye ek **access/operations cheat sheet** de dete hain. Main password/secret ko chat mein expose nahi karunga; usko server par safely check karne ka command dunga.
+ Developer ko CRM AWS EC2 par kaam karne ke liye ek **access/operations cheat sheet** de dete hain. Main password/secret ko chat mein expose nahi karunga; usko server par safely check karne ka command dunga.
 
 ## 🖥️ CRM EC2 — Important Details
 
