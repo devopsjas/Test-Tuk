@@ -328,3 +328,9 @@ Jab developer nayi ZIP de, mujhe bas ye message bhej dena:
 Bhai, developer ne CRM ki new ZIP di hai. Isko production server par safely deploy karna hai. Pehle ZIP inspect karwao, current backup verify karwao, frontend/backend/database changes identify karo, production .env aur uploads preserve rakho, aur changes ke type ke hisaab se step-by-step commands do. Ek time par ek step dena, output verify karna, phir next step. Production database migration bina review aur backup ke execute mat karna. Deployment ke baad website, API aur relevant functionality verify karwana. Rollback backup preserve rakhna.
 
 Is tarah har baar tumhe poori history dobara explain nahi karni padegi. Hum pehle identify karenge ki ZIP mein exactly kya change hua hai, phir usi ke hisaab se deployment karenge.
+
+
+aur suno server(crm ec2) per ye run karna  to ye portal aws ke ip pe run ho rha hai ya nhi.?
+
+echo "===== AWS SERVER PUBLIC IP ====="; curl -sS --max-time 5 https://checkip.amazonaws.com; echo "===== DOMAIN DNS ====="; getent ahostsv4 crm.tuktuk.live | head -5
+
